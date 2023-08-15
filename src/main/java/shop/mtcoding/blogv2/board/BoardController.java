@@ -28,4 +28,12 @@ public class BoardController {
         boardService.글쓰기(saveDTO, 1);
         return "redirect:/";
     }
+
+    @GetMapping("/")
+    public String index(){
+        return "index";
+    } // 나중에지울것 임시로
+
+
+
 }

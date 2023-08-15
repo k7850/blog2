@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /*
  * save, findById, findAll, count 저절로 만들어줌
  */
-
+// 스프링이 실행될 때, BoardRepository의 구현체가 IoC 컨테이너에 생성된다.
 public interface BoardRepository extends JpaRepository<Board, Integer>{
 
 }

@@ -5,15 +5,16 @@
     <div class="card">
         <div class="card-header"><b>회원수정을 해주세요</b></div>
         <div class="card-body">
-            <form action="#">
+            <!--글수정이었으면 /board/1/update 이런식으로 하는게 좋지만, 회원수정은 세션 보면 되니까 굳이 안해도 됨-->
+            <form action="/user/update" method="post">
                 <div class="mb-3">
-                    <input type="text" class="form-control" placeholder="Enter username" name="username" disabled>
+                    <input type="text" class="form-control" placeholder="Enter username" disabled value="{{user.username}}">
                 </div>
                 <div class="mb-3">
-                    <input type="password" class="form-control" placeholder="Enter password" name="password">
+                    <input type="password" class="form-control" placeholder="Enter password" name="password" required>
                 </div>
                 <div class="mb-3">
-                    <input type="email" class="form-control" placeholder="Enter email" name="email" disabled>
+                    <input type="email" class="form-control" placeholder="Enter email" name="email" disabled value="{{user.email}}">
                 </div>
                 <button type="submit" class="btn btn-primary form-control">회원가입수정</button>
             </form>
