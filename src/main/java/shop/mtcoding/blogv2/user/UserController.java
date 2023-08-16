@@ -21,6 +21,16 @@ public class UserController {
     @Autowired
     private HttpSession session;
 
+    // 브라우저 Get / logout 요청을 함 (request)
+    // 서버는 / 주소를 response의 헤더에 담음 (Location), 상태코드 302 
+    // 브라우저는 Get / 로 재요청을 함 (request 2)
+    // index 페이지 응답받고 렌더링
+    @GetMapping("/logout")
+    public @ResponseBody String logout(){
+        session.invalidate();
+        return Script.href("로그아웃 했습니다.", "/");
+    }
+
     // C - V (DB 관여 안하니까 M은 없다)
     @GetMapping("/joinForm")
     public String joinForm() {
