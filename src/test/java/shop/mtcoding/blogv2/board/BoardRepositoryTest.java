@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,15 @@ public class BoardRepositoryTest {
     
     @Autowired
     private BoardRepository boardRepository;
+
+    @Test
+    public void findById_Test(){
+        Optional<Board> boardOP = boardRepository.findById(2);
+        if(boardOP.isPresent()){ // null안정성검사
+            System.out.println("테스트:board있음");
+        }
+    }
+
 
     @Test
     public void findAll_paging_test() throws JsonProcessingException{
