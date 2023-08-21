@@ -43,7 +43,7 @@ public class BoardService {
     }
 
     public Board 상세보기(Integer id) {
-        Optional<Board> boardOP = boardRepository.findById(id);
+        Optional<Board> boardOP = boardRepository.mFindByIdJoinRepliesInUser(id);
         if (boardOP.isPresent()) {
             return boardOP.get();
         } else {

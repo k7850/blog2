@@ -26,11 +26,29 @@ public class BoardRepositoryTest {
     private BoardRepository boardRepository;
 
     @Test
+    public void mFindByIdJoinRepliesInUser_test(){
+        System.out.println("====================");
+        Board board = boardRepository.mFindByIdJoinRepliesInUser(1).get();
+        System.out.println(board.getId());
+        System.out.println(board.getTitle());
+        System.out.println(board.getContent());
+        System.out.println(board.getCreatedAt());
+        System.out.println("===================");
+        board.getReplies().stream().forEach(r -> {
+            System.out.println("1"+r.getId());
+            System.out.println("2"+r.getComment());
+            System.out.println("4"+r.getUser().getId());
+            System.out.println("5"+r.getUser().getUsername());
+        });
+    }
+
+    @Test
     public void findById_Test(){
-        Optional<Board> boardOP = boardRepository.findById(2);
-        if(boardOP.isPresent()){ // null안정성검사
-            System.out.println("테스트:board있음");
-        }
+        System.out.println("====================");
+        Optional<Board> boardOP = boardRepository.findById(1);
+        System.out.println(boardOP.get());
+        System.out.println(boardOP.get().getReplies().get(0).getUser().getUsername());
+        System.out.println(boardOP.get().getReplies().get(0).getComment());
     }
 
 

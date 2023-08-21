@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,16 +13,16 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import shop.mtcoding.blogv2.board.Board;
 import shop.mtcoding.blogv2.user.User;
 
 @NoArgsConstructor
-@ToString
 @Setter
 @Getter
 @Table(name = "reply_tb")
@@ -35,10 +36,11 @@ public class Reply {
     @Column(nullable = false, length = 100)
     private String comment;
 
-    @ManyToOne
+    @JsonIgnoreProperties({"password", "email", "createdAt"})
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Board board;
 
     @CreationTimestamp

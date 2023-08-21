@@ -53,6 +53,15 @@ public class BoardController {
         return "board/detail";
     }
 
+    // @Autowired
+    // private BoardRepository boardRepository;
+    //
+    // @GetMapping("/test/board/{id}")
+    // public @ResponseBody Board testDetail(@PathVariable Integer id) {
+    //     Board board = boardRepository.mFindByIdJoinRepliesInUser(id).get();
+    //     return board; 
+    // }
+
     @GetMapping("/")
     public String index(@RequestParam(defaultValue = "0") Integer page, HttpServletRequest request) {
         Page<Board> boardPG = boardService.게시글목록보기(page);
