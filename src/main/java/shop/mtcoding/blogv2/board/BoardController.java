@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import shop.mtcoding.blogv2._core.util.Script;
 import shop.mtcoding.blogv2.user.User;
 
+
 @Controller
 public class BoardController {
 
