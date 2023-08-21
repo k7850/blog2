@@ -24,8 +24,8 @@
     <div class="card mt-3">
         <!-- 댓글등록 -->
         <div class="card-body">
-            <form action="#">
-                <input type="hidden" name="boardId">
+            <form action="/reply/save" method="post">
+                <input type="hidden" name="boardId" value="{{board.id}}">
                 <textarea class="form-control" rows="2" name="comment"></textarea>
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-outline-primary mt-1">댓글등록</button>
@@ -46,6 +46,7 @@
                     <div>{{comment}}</div>
                 </div>
                 <form action="/reply/{{id}}/delete" method="post">
+                    <input type="hidden" name="boardId" value="{{board.id}}">
                     <button class="btn">🗑</button>
                 </form>
             </div>
