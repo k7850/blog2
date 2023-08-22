@@ -60,5 +60,9 @@ public class UserService {
         return user;
     } // 3. Transactional이면 flush 필요없음
 
+    public User 중복체크(String username) {
+        return userRepository.findByUsername(username);
+    }
+
 
 }

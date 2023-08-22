@@ -16,6 +16,7 @@ import shop.mtcoding.blogv2.board.BoardRequest.UpdateDTO;
 import shop.mtcoding.blogv2.reply.Reply;
 import shop.mtcoding.blogv2.reply.ReplyRepository;
 import shop.mtcoding.blogv2.user.User;
+import shop.mtcoding.blogv2.user.UserRepository;
 
 /*
  * 서비스 역할
@@ -47,6 +48,27 @@ public class BoardService {
     public Page<Board> 게시글목록보기(Integer page) {
         Pageable pageable = PageRequest.of(page, 3, Sort.Direction.DESC, "id");
         return boardRepository.findAll(pageable);
+    }
+
+    public Page<Board> 게시글목록보기(String keyword, Integer page) {
+        Pageable pageable = PageRequest.of(page, 3, Sort.Direction.DESC, "id");
+        return boardRepository.findByTitleContaining(keyword, pageable);
+    }
+
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public Page<Board> 게시글목록보기2(String keyword, Integer page) {
+        User user = userRepository.findByUsername(keyword);
+
+        Integer userId = 0;
+        if(user != null){
+            userId=user.getId();
+        }
+
+        Pageable pageable = PageRequest.of(page, 3, Sort.Direction.DESC, "id");
+        return boardRepository.findByTitleContainingOrContentContainingOrUserId(keyword,keyword,userId, pageable);
     }
 
     public Board 상세보기(Integer id) {

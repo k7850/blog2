@@ -3,9 +3,13 @@ package shop.mtcoding.blogv2.board;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import shop.mtcoding.blogv2.user.User;
 
 /*
  * save, findById, findAll, count 저절로 만들어줌
@@ -24,4 +28,12 @@ public interface BoardRepository extends JpaRepository<Board, Integer>{
 
     @Query("select b from Board b left join fetch b.replies r left join fetch r.user ru where b.id = :id")
     Optional<Board> mFindByIdJoinRepliesInUser(@Param("id") Integer id);
+
+    Page<Board> findByTitleContaining(String keyword, Pageable pageable);
+    // Spring이 자동으로 만들어준거 
+    // title로 찾는데 Containing이니까 검색해서 Page해서 반환
+
+    Page<Board> findByTitleContainingOrContentContaining(String keyword, String keyword2, Pageable pageable);
+    
+    Page<Board> findByTitleContainingOrContentContainingOrUserId(String keyword, String keyword2, Integer userId, Pageable pageable);
 }

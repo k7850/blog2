@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +40,17 @@ public class UserController {
         return "user/joinForm";
     }
     
+    @GetMapping("/check")
+    // ResponseEntity : @ResponseBody랑 비슷한데 HTTP 응답을 반환 / 응답 상태 코드, 헤더 및 응답 본문(body)을 설정하기 위해 사용
+    public ResponseEntity<String> check(String username){
+        User user = userService.중복체크(username);
+        if (user != null) {
+            return new ResponseEntity<String>("유저네임이 중복 되었습니다", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<String>("유저네임을 사용할 수 있습니다", HttpStatus.OK);
+    }
+
+
     // M - V - C
     @PostMapping("/join")
     public String join(UserRequest.JoinDTO joinDTO){

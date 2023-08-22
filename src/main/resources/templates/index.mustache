@@ -4,11 +4,29 @@
 <div class="container p-5">
 
     <div class="mb-2 d-flex justify-content-end">
-        <form class="d-flex" action="#">
-            <input id="keyword" class="form-control me-2" type="text" name="keyword" placeholder="Search" required>
-            <button class="btn btn-primary" type="submit">Search</button>
+        <form class="d-flex" action="/" method="get" onsubmit="return valid()">
+            <div>
+                <input id="keyword" class="form-control me-2" type="text" name="keyword" {{#keyword}}value="{{keyword}}"{{/keyword}} placeholder="검색어를 입력하세요." required>
+            </div>
+            <div class="ms-2">
+                <button class="btn btn-primary" type="submit">검색하기</button>
+            </div>
         </form>
     </div>
+
+  <script>
+    function isWhitespace(str) {
+      return str.trim() === '';
+    }
+    function valid() {
+      let keyword = document.querySelector("#keyword").value;
+      console.log(keyword);
+      if (isWhitespace(keyword)) {
+        alert('공백을 입력할 수 없습니다');
+        return false;
+      }
+    }
+  </script>
 
     {{#boardPG.content}}
     <div class="card mb-3">
@@ -23,11 +41,15 @@
 
     <!--disabled-->
     <ul class="pagination d-flex justify-content-center">
-        <li class="page-item {{#boardPG.first}}disabled{{/boardPG.first}}"><a class="page-link"
-                href="?page={{prevPage}}">Previous</a>
-        </li>
-        <li class="page-item {{#boardPG.last}}disabled{{/boardPG.last}}"><a class="page-link"
-                href="?page={{nextPage}}">Next</a></li>
+      {{#keyword}}
+      <li class="page-item {{#boardPG.first}}disabled{{/boardPG.first}}"><a class="page-link text-dark" href="?keyword={{keyword}}&page={{prevPage}}">이전 페이지</a></li>
+      <li class="page-item {{#boardPG.last}}disabled{{/boardPG.last}}"><a class="page-link text-dark" href="?keyword={{keyword}}&page={{nextPage}}">다음 페이지</a></li>
+      {{/keyword}}
+  
+      {{^keyword}}
+      <li class="page-item {{#boardPG.first}}disabled{{/boardPG.first}}"><a class="page-link text-dark" href="?page={{prevPage}}">이전 페이지</a></li>
+      <li class="page-item {{#boardPG.last}}disabled{{/boardPG.last}}"><a class="page-link text-dark" href="?page={{nextPage}}">다음 페이지</a></li>
+      {{/keyword}}
     </ul>
 
 </div>

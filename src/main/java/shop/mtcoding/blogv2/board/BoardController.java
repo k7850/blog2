@@ -63,8 +63,16 @@ public class BoardController {
     // }
 
     @GetMapping("/")
-    public String index(@RequestParam(defaultValue = "0") Integer page, HttpServletRequest request) {
-        Page<Board> boardPG = boardService.게시글목록보기(page);
+    public String index(@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "0") Integer page, HttpServletRequest request) {
+
+        Page<Board> boardPG = null;
+        if(keyword == null){
+            boardPG = boardService.게시글목록보기(page);
+        } else{
+            boardPG = boardService.게시글목록보기2(keyword, page);
+            request.setAttribute("keyword", keyword);
+        }
+        
         request.setAttribute("boardPG", boardPG); // 실무에선 밑에 것들 같은거랑 뭉쳐서 DTO 만들어서 1개로 관리하는게 좋다
         request.setAttribute("prevPage", boardPG.getNumber() - 1);
         request.setAttribute("nextPage", boardPG.getNumber() + 1);
