@@ -1,5 +1,6 @@
 package shop.mtcoding.blogv2.board;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import shop.mtcoding.blogv2._core.error.ex.MyException;
 import shop.mtcoding.blogv2.board.BoardRequest.UpdateDTO;
+import shop.mtcoding.blogv2.reply.Reply;
+import shop.mtcoding.blogv2.reply.ReplyRepository;
 import shop.mtcoding.blogv2.user.User;
 
 /*
@@ -25,6 +29,9 @@ public class BoardService {
 
     @Autowired
     private BoardRepository boardRepository;
+
+    @Autowired
+    private ReplyRepository replyRepository;
 
     @Transactional
     public void 글쓰기(BoardRequest.SaveDTO saveDTO, int sessionUserId) {
@@ -47,7 +54,7 @@ public class BoardService {
         if (boardOP.isPresent()) {
             return boardOP.get();
         } else {
-            throw new RuntimeException("게시글" + id + "는 찾을 수 없습니다");
+            throw new MyException("게시글" + id + "는 찾을 수 없습니다");
         }
     }
 
@@ -60,16 +67,20 @@ public class BoardService {
             board.setTitle(DTO.getTitle());
             board.setContent(DTO.getContent());
         } else{
-            throw new RuntimeException(id + "글 없음");
+            throw new MyException(id + "글 없음");
         }
     } // @Transactional 끝나면서 flush되면 더티체킹으로 자동 반영됨
 
     @Transactional
     public void 삭제하기(Integer id) {
+        List<Reply> replies = replyRepository.findByBoardId(id);
+        for (Reply reply : replies) {
+            reply.setBoard(null);
+        }
         try {
             boardRepository.deleteById(id);
         } catch (Exception e) {
-            throw new RuntimeException("없는 게시글 id로 찾음");
+            throw new MyException("없는 게시글 id로 찾음");
         }
     }
 

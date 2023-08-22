@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import shop.mtcoding.blogv2._core.error.ex.MyException;
 import shop.mtcoding.blogv2._core.util.Script;
 
 // 요청 처리, 핵심로직을 호출, 응답 처리
@@ -52,10 +53,9 @@ public class UserController {
     @PostMapping("/login")
     public @ResponseBody String login(UserRequest.LoginDTO loginDTO){ // @ResponseBody 여기 적어도 됨
         User sessionUser = userService.로그인(loginDTO);
-        if(sessionUser == null){
-            return Script.back("로그인 실패");
-        }
-
+        // if(sessionUser == null){
+        //     throw new MyException("로그인 실패했습니다.");
+        // } // 서비스에서 null을 리턴하는게 아니라 아예 에러로 던졌으니까 필요없음
         session.setAttribute("sessionUser", sessionUser); // session을 쓰면 Stateful서버
         return Script.href("로그인 성공", "/");
     }

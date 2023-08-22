@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -47,7 +48,8 @@ public class Board {
     private User user;
 
     // OneToMany는 LAZY전략이 디폴트
-    @JsonIgnoreProperties({"board"}) // 데이터줄땐 메세지컨버터로 lazy로딩이라 무한참조일어나서 막을려고
+    @JsonIgnoreProperties({"board"}) // 데이터줄땐 메세지컨버터로 lazy로딩돼서 무한참조일어나서 막을려고
+    // @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL) // 상위 엔터티에서 하위 엔터티로 모든 작업을 전파 (보드삭제시 보드에 달린 리플도 삭제됨)
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY) // 포링키가 아니라는 설정(Reply의 이 클래스 변수명)
     private List<Reply> replies = new ArrayList<>();
 
