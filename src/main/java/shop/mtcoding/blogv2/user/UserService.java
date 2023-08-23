@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import shop.mtcoding.blogv2._core.error.ex.MyException;
+import shop.mtcoding.blogv2._core.util.Image;
 import shop.mtcoding.blogv2._core.vo.MyPath;
 import shop.mtcoding.blogv2.user.UserRequest.JoinDTO;
 import shop.mtcoding.blogv2.user.UserRequest.LoginDTO;
-import shop.mtcoding.blogv2.user.UserRequest.UpdateDto;
+import shop.mtcoding.blogv2.user.UserRequest.UpdateDTO;
 
 // 핵심로직 처리, 트랜잭션 관리, 예외 처리
 @Service
@@ -25,22 +26,7 @@ public class UserService {
     @Transactional // db 변경이 있으면 붙여야함
     public void 회원가입(JoinDTO joinDTO) {
 
-        String fileName = null;
-        if(joinDTO.getPic().getSize()!=0){
-            UUID uuid = UUID.randomUUID(); // 랜덤한 해시값을 만들어줌
-            fileName = uuid + "_" + joinDTO.getPic().getOriginalFilename();
-            // System.out.println("테스트 : fileName : "+fileName);
-
-            // 프로젝트 실행 파일변경 -> blogv2-1.0.jar
-            // 해당 실행파일 경로에 images 폴더가 필요함
-            Path filePath = Paths.get(MyPath.IMG_PATH+fileName);
-
-            try {
-                Files.write(filePath, joinDTO.getPic().getBytes());
-            } catch (Exception e) {
-                throw new MyException("사진등록오류");
-            }
-        }
+        String fileName = Image.updateImage(joinDTO);
 
         User user = User.builder()
                 .username(joinDTO.getUsername())
@@ -73,13 +59,21 @@ public class UserService {
     }
 
     @Transactional
-    public User 회원수정(UpdateDto updateDTO, Integer id) {
+    public User 회원수정(UpdateDTO updateDTO, Integer id) {
+
+        String fileName = Image.updateImage(updateDTO);
+
         // 1. 조회 (영속화)
         User user = userRepository.findById(id).get();
 
         // 2. 변경
-        user.setPassword(updateDTO.getPassword());
-
+        if(!updateDTO.getPassword().isEmpty()){
+            user.setPassword(updateDTO.getPassword());
+        }
+        
+        if(fileName != null){ // 사진 안넣으면 기존 사진 유지하게
+            user.setPicUrl(fileName);
+        }
         
         return user;
     } // 3. Transactional이면 flush 필요없음

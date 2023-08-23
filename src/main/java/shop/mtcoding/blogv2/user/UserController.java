@@ -85,7 +85,7 @@ public class UserController {
     }
 
     @PostMapping("/user/update")
-    public String update(UserRequest.UpdateDto updateDTO){
+    public String update(UserRequest.UpdateDTO updateDTO){
         // 1. 회원수정 (Service가 할 일)
         // 2. 수정된거랑 세션이랑 동기화
         User sessionUser = (User)session.getAttribute("sessionUser");

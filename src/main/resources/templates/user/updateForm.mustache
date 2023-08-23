@@ -4,7 +4,8 @@
     .circle_avatar {
         width: 200px;
         height: 200px;
-        border-radius: 100px;
+        border-radius: 50px;
+        border: 1px solid black;
     }
 </style>
 
@@ -16,30 +17,58 @@
 
         <div class="card-header d-flex justify-content-center">
             {{#user.picUrl}}
-            <img class="circle_avatar" src="/images/{{user.picUrl}}">
+            <img id="preview" class="circle_avatar" src="/images/{{user.picUrl}}">
             {{/user.picUrl}}
             
             {{^user.picUrl}}
-            <div class="circle_avatar"></div>
+            <img id="preview" class="circle_avatar">
             {{/user.picUrl}}
         </div>
 
         <div class="card-body">
             <!--글수정이었으면 /board/1/update 이런식으로 하는게 좋지만, 회원수정은 세션 보면 되니까 굳이 안해도 됨-->
-            <form action="/user/update" method="post">
+            <form action="/user/update" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <input type="text" class="form-control" placeholder="Enter username" disabled value="{{user.username}}">
                 </div>
                 <div class="mb-3">
-                    <input type="password" class="form-control" placeholder="Enter password" name="password" required>
+                    <input type="password" class="form-control" placeholder="변경할 비밀번호 입력" name="password">
                 </div>
                 <div class="mb-3">
                     <input type="email" class="form-control" placeholder="Enter email" name="email" disabled value="{{user.email}}">
+                </div>
+                <div class="mb-3">
+                    <input type="file" id="fileInput" class="form-control" onchange="changePic(event)" name="pic"> <!-- event는 변경될때 정보를 담는 문법-->
                 </div>
                 <button type="submit" class="btn btn-primary form-control">회원가입수정</button>
             </form>
         </div>
     </div>
 </div>
+
+
+<script>
+    function changePic(e1){
+        console.log(e1);
+        let f = e1.srcElement.files[0];
+        
+        console.log(f.type);
+        if(!(f.type.match("image.*"))) {
+            alert("이미지만 등록 가능")
+            return;
+        }
+
+        let reader = new FileReader();
+        reader.onload = function(e2){ // 파일이 다 읽어지면 콜백됨
+            console.log("순서"+1); // 1보다 2가 먼저 출력됨 콜백함수 이벤트리스너에 등록만하고 넘어감
+            console.log(e2);
+            let previewEl = document.querySelector("#preview");
+            previewEl.setAttribute("src", e2.target.result);
+        }
+        reader.readAsDataURL(f); // 끝나면 파일 읽기 onload()
+        console.log("순서"+2);
+    }
+</script>
+
 
 {{> layout/footer}}
