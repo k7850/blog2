@@ -28,6 +28,11 @@ public interface BoardRepository extends JpaRepository<Board, Integer>{
 
     @Query("select b from Board b left join fetch b.replies r left join fetch r.user ru where b.id = :id")
     Optional<Board> mFindByIdJoinRepliesInUser(@Param("id") Integer id);
+    
+
+    
+    @Query("SELECT b FROM Board b WHERE b.title LIKE :keyword OR b.content LIKE :keyword ORDER BY b.id DESC")
+    Page<Board> find2(@Param("keyword") String keyword, Pageable pageable);
 
     Page<Board> findByTitleContaining(String keyword, Pageable pageable);
     // Spring이 자동으로 만들어준거 
@@ -36,4 +41,7 @@ public interface BoardRepository extends JpaRepository<Board, Integer>{
     Page<Board> findByTitleContainingOrContentContaining(String keyword, String keyword2, Pageable pageable);
     
     Page<Board> findByTitleContainingOrContentContainingOrUserId(String keyword, String keyword2, Integer userId, Pageable pageable);
+
+    
+
 }

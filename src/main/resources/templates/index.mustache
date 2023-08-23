@@ -41,15 +41,15 @@
 
     <!--disabled-->
     <ul class="pagination d-flex justify-content-center">
-      {{#keyword}}
-      <li class="page-item {{#boardPG.first}}disabled{{/boardPG.first}}"><a class="page-link text-dark" href="?keyword={{keyword}}&page={{prevPage}}">이전 페이지</a></li>
-      <li class="page-item {{#boardPG.last}}disabled{{/boardPG.last}}"><a class="page-link text-dark" href="?keyword={{keyword}}&page={{nextPage}}">다음 페이지</a></li>
-      {{/keyword}}
+        {{#keyword}}
+        <li class="page-item {{#boardPG.first}}disabled{{/boardPG.first}}"><a class="page-link text-dark" href="?keyword={{keyword}}&page={{prevPage}}">이전 페이지</a></li>
+        <li class="page-item {{#boardPG.last}}disabled{{/boardPG.last}}"><a class="page-link text-dark" href="?keyword={{keyword}}&page={{nextPage}}">다음 페이지</a></li>
+        {{/keyword}}
   
-      {{^keyword}}
-      <li class="page-item {{#boardPG.first}}disabled{{/boardPG.first}}"><a class="page-link text-dark" href="?page={{prevPage}}">이전 페이지</a></li>
-      <li class="page-item {{#boardPG.last}}disabled{{/boardPG.last}}"><a class="page-link text-dark" href="?page={{nextPage}}">다음 페이지</a></li>
-      {{/keyword}}
+        {{^keyword}}
+        <li class="page-item {{#boardPG.first}}disabled{{/boardPG.first}}"><a class="page-link text-dark" href="?page={{prevPage}}">이전 페이지</a></li>
+        <li class="page-item {{#boardPG.last}}disabled{{/boardPG.last}}"><a class="page-link text-dark" href="?page={{nextPage}}">다음 페이지</a></li>
+        {{/keyword}}
     </ul>
 
 </div>

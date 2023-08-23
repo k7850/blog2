@@ -27,13 +27,13 @@ class MyRepository {
 }
 
 public class HelloTest {
-    public static void main(String[] args) {
-        MyController myController = new MyController();
-        try {
-            myController.home(false);
+    // public static void main(String[] args) {
+    //     MyController myController = new MyController();
+    //     try {
+    //         myController.home(false);
     
-        } catch (Exception e) {
-            System.out.println("괜찮아");
-        }
-    }
+    //     } catch (Exception e) {
+    //         System.out.println("괜찮아");
+    //     }
+    // }
 }

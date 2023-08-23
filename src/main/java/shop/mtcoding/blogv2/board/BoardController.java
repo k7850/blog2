@@ -69,7 +69,7 @@ public class BoardController {
         if(keyword == null){
             boardPG = boardService.게시글목록보기(page);
         } else{
-            boardPG = boardService.게시글목록보기2(keyword, page);
+            boardPG = boardService.게시글목록보기3(keyword, page);
             request.setAttribute("keyword", keyword);
         }
         

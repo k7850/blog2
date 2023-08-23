@@ -1,9 +1,29 @@
 {{> layout/header}}
 
+<style>
+    .circle_avatar {
+        width: 200px;
+        height: 200px;
+        border-radius: 100px;
+    }
+</style>
+
+
 <div class="container p-5">
 
     <div class="card">
         <div class="card-header"><b>회원수정을 해주세요</b></div>
+
+        <div class="card-header d-flex justify-content-center">
+            {{#user.picUrl}}
+            <img class="circle_avatar" src="/images/{{user.picUrl}}">
+            {{/user.picUrl}}
+            
+            {{^user.picUrl}}
+            <div class="circle_avatar"></div>
+            {{/user.picUrl}}
+        </div>
+
         <div class="card-body">
             <!--글수정이었으면 /board/1/update 이런식으로 하는게 좋지만, 회원수정은 세션 보면 되니까 굳이 안해도 됨-->
             <form action="/user/update" method="post">

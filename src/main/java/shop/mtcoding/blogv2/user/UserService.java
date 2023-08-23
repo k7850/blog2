@@ -1,11 +1,16 @@
 package shop.mtcoding.blogv2.user;
 
-import javax.transaction.Transactional;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import shop.mtcoding.blogv2._core.error.ex.MyException;
+import shop.mtcoding.blogv2._core.vo.MyPath;
 import shop.mtcoding.blogv2.user.UserRequest.JoinDTO;
 import shop.mtcoding.blogv2.user.UserRequest.LoginDTO;
 import shop.mtcoding.blogv2.user.UserRequest.UpdateDto;
@@ -19,10 +24,29 @@ public class UserService {
 
     @Transactional // db 변경이 있으면 붙여야함
     public void 회원가입(JoinDTO joinDTO) {
+
+        String fileName = null;
+        if(joinDTO.getPic().getSize()!=0){
+            UUID uuid = UUID.randomUUID(); // 랜덤한 해시값을 만들어줌
+            fileName = uuid + "_" + joinDTO.getPic().getOriginalFilename();
+            // System.out.println("테스트 : fileName : "+fileName);
+
+            // 프로젝트 실행 파일변경 -> blogv2-1.0.jar
+            // 해당 실행파일 경로에 images 폴더가 필요함
+            Path filePath = Paths.get(MyPath.IMG_PATH+fileName);
+
+            try {
+                Files.write(filePath, joinDTO.getPic().getBytes());
+            } catch (Exception e) {
+                throw new MyException("사진등록오류");
+            }
+        }
+
         User user = User.builder()
                 .username(joinDTO.getUsername())
                 .password(joinDTO.getPassword())
                 .email(joinDTO.getEmail())
+                .picUrl(fileName) // "./images/"+fileName 로 경로까지 적으면 폴더변경불가
                 .build();
         userRepository.save(user); // 내부적으로 em.persist 가 실행되고 영속화
     }

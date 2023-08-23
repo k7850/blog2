@@ -55,6 +55,13 @@ public class BoardService {
         return boardRepository.findByTitleContaining(keyword, pageable);
     }
 
+    
+
+    public Page<Board> 게시글목록보기3(String keyword, Integer page) {
+        Pageable pageable = PageRequest.of(page, 3, Sort.Direction.DESC, "id");
+        return boardRepository.find2("%"+keyword+"%", pageable);
+    }
+
 
     @Autowired
     private UserRepository userRepository;
